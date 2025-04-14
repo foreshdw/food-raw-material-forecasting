@@ -41,8 +41,8 @@ Follow these steps to set up and run the project locally:
 
 ### 1️⃣ Clone the repository
 ```sh
-git clone https://github.com/foreshdw/skripsi-food-raw-material-forecasting.git
-cd skripsi-food-raw-material-forecasting
+git clone https://github.com/foreshdw/food-raw-material-forecasting.git
+cd food-raw-material-forecasting
 ```
 
 ### 2️⃣ Setup Backend
