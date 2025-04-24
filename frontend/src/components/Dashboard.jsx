@@ -155,7 +155,7 @@ const Dashboard = () => {
                 </div>
                 <div className="bg-black text-yellow-500 p-4 rounded-2xl text-center md:text-left shadow-sm shadow-slate-400">
                     <p>Total Prediksi Bahan Baku</p>
-                    <h3 className="text-xl font-bold">{totalBahanBaku} gram/ml</h3>
+                    <h3 className="text-xl font-bold">{totalBahanBaku}</h3>
                 </div>
             </div>
 
@@ -290,7 +290,16 @@ const Dashboard = () => {
                                 <tbody>
                                     {Object.entries(prediction.bahan_baku).map(([key, value], index) => {
                                         // Menentukan satuan berdasarkan jenis bahan baku
-                                        const unit = key.toLowerCase().includes("air") || key.toLowerCase().includes("minyak") ? "ml" : "gram";
+                                        let unit = "gram"; // default
+                                        const lowerKey = key.toLowerCase();
+
+                                        if (lowerKey.includes("bawang putih")) {
+                                            unit = "siung";
+                                        } else if (lowerKey.includes("rosemary fresh")) {
+                                            unit = "batang";
+                                        } else if (lowerKey.includes("air")) {
+                                            unit = "ml";
+                                        }
 
                                         return (
                                             <tr key={key} className={index % 2 === 0 ? "bg-gray-200" : ""}>
@@ -308,7 +317,7 @@ const Dashboard = () => {
                                     onClick={handleDownload}
                                     className="bg-yellow-500 text-black font-bold py-2 px-4 mt-4 rounded-md"
                                 >
-                                    Download Hasil Prediksi
+                                    Unduh Hasil Prediksi
                                 </button>
                             </div>
                         </div>
