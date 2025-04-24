@@ -8,7 +8,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error
 import joblib
 import matplotlib.pyplot as plt
 
-print(tf.__version__) 
+print(tf.__version__)
 
 # Load data
 file_path = "Data Warung Fotkop.xlsx"
@@ -67,7 +67,6 @@ print("Feature Scaler Mean:", scaler_features.center_)
 print("Feature Scaler Scale:", scaler_features.scale_)
 print("Target Scaler Mean:", scaler_target.center_)
 print("Target Scaler Scale:", scaler_target.scale_)
-
 
 # Split data train-test (80% train, 20% test)
 train_size = int(len(X_scaled) * 0.8)

@@ -28,12 +28,12 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Load model dan scaler
-model_americano = tf.keras.models.load_model("models/lstm_model_americano.h5")
-model_garlic = tf.keras.models.load_model("models/lstm_garlic_fries.h5")
-scaler_features_americano = joblib.load("models/scaler_features_americano.pkl")
-scaler_target_americano = joblib.load("models/scaler_target_americano.pkl")
-scaler_features_garlic = joblib.load("models/scaler_features_garlic_fries.pkl")
-scaler_target_garlic = joblib.load("models/scaler_target_garlic_fries.pkl")
+model_americano = tf.keras.models.load_model("./models/lstm_model_americano.h5")
+model_garlic = tf.keras.models.load_model("./models/lstm_garlic_fries.h5")
+scaler_features_americano = joblib.load("./models/scaler_features_americano.pkl")
+scaler_target_americano = joblib.load("./models/scaler_target_americano.pkl")
+scaler_features_garlic = joblib.load("./models/scaler_features_garlic_fries.pkl")
+scaler_target_garlic = joblib.load("./models/scaler_target_garlic_fries.pkl")
 
 # Load default dataset saat server start
 DEFAULT_FILENAME = "Data Warung Fotkop.xlsx"
@@ -191,7 +191,7 @@ def predict():
 @app.route('/upload', methods=['POST'])
 def upload_file():
     global df
-    global latest_uploaded_filename  # <- Tambahkan ini
+    global latest_uploaded_filename
 
     if 'file' not in request.files:
         return jsonify({'error': 'Tidak ada file dalam request'}), 400
@@ -205,7 +205,7 @@ def upload_file():
         path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(path)
 
-        latest_uploaded_filename = filename  # <- Simpan nama file
+        latest_uploaded_filename = filename  # Simpan nama file
         df = pd.read_excel(path)
         
         return jsonify({'message': 'File berhasil diunggah dan data diperbarui'}), 200

@@ -8,7 +8,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error
 import joblib
 import matplotlib.pyplot as plt
 
-print(tf.__version__) 
+print(tf.__version__)
 
 # Load data
 file_path = "Data Warung Fotkop.xlsx"
@@ -59,6 +59,14 @@ y_scaled = scaler_target.fit_transform(data_bulanan[['Item Sold']])
 joblib.dump(scaler_features, "scaler_features_garlic_fries.pkl")
 joblib.dump(scaler_target, "scaler_target_garlic_fries.pkl")
 print("\nScaler telah disimpan sebagai 'scaler_features_garlic_fries.pkl' dan 'scaler_target_garlic_fries.pkl'")
+
+scaler_features = joblib.load("scaler_features_americano.pkl")
+scaler_target = joblib.load("scaler_target_americano.pkl")
+
+print("Feature Scaler Mean:", scaler_features.center_)
+print("Feature Scaler Scale:", scaler_features.scale_)
+print("Target Scaler Mean:", scaler_target.center_)
+print("Target Scaler Scale:", scaler_target.scale_)
 
 # Split data train-test (80% train, 20% test)
 train_size = int(len(X_scaled) * 0.8)
@@ -120,7 +128,7 @@ mae = mean_absolute_error(y_test_original, y_pred)
 # plt.figure(figsize=(10, 5))
 # plt.plot(y_test_original, label="Actual", marker='o', linestyle='dashed', color='blue')
 # plt.plot(y_pred, label="Predicted", marker='s', linestyle='dashed', color='red')
-# plt.xlabel("Data Points")
+# plt.xlabel("Months")
 # plt.ylabel("Item Sold")
 # plt.title("Actual vs Predicted - Garlic Fries")
 # plt.legend()
@@ -130,22 +138,21 @@ mae = mean_absolute_error(y_test_original, y_pred)
 # ==========================================================
 # Prediksi Item Sold dan Bahan Baku untuk 1 Bulan ke Depan
 # ==========================================================
+# Prediksi item sold
 last_input = X_scaled[-1].reshape(1, 1, X_scaled.shape[1])
 next_pred_scaled = model.predict(last_input)
-next_pred = int(round(scaler_target.inverse_transform(next_pred_scaled)[0][0]))
+predicted_sold = int(round(scaler_target.inverse_transform(next_pred_scaled)[0][0]))
 
-# Hitung total kebutuhan bahan baku untuk 1 bulan
-print(f"\n Prediksi Item Sold Garlic Fries Bulan Depan: {next_pred}")
-
+# Hitung kebutuhan bahan baku berdasarkan rasio per porsi
 bahan_baku_total = {}
 for bahan in bahan_baku:
-    mean_ratio = data_bulanan[f'Per Porsi {bahan}'].median()
-    total_bahan = int(round(next_pred * mean_ratio))
-    bahan_baku_total[bahan] = max(total_bahan, 0)
+    # Ambil rata-rata rasio bahan per porsi
+    mean_ratio = data_bulanan[f'Per Porsi {bahan}'].mean()
+    total_bahan = max(int(round(predicted_sold * mean_ratio)), 0)
+    bahan_baku_total[bahan] = f"{total_bahan}"
 
-print("\n Prediksi Kebutuhan Bahan Baku Bulan Depan:")
-for bahan, jumlah in bahan_baku_total.items():
-    print(f"{bahan}: {jumlah} gram/ml")
+print(f"Predicted Sold: {predicted_sold}")
+print("Bahan Baku Bulanan:", bahan_baku_total)
 
 # Simpan hasil prediksi ke file Excel
 # output_data = {'Item Sold': [next_pred]}
