@@ -184,7 +184,7 @@ def predict():
         "bahan_baku": bahan_baku_total,
         "bulan_prediksi": bulan_indonesia,
         "tahun_prediksi": tahun_prediksi,
-        "message": "Dataset berhasil diperbarui dan semua kolom telah disejajarkan ke tengah."
+        "message": "Dataset berhasil diperbarui"
     })
 
 # Route upload file

@@ -112,6 +112,13 @@ mae = mean_absolute_error(y_test_original, y_pred)
 # print(f"RMSE: {rmse:.4f}")
 # print(f"MAE: {mae:.4f}")
 
+# Evaluasi tambahan: Rasio RMSE dan MAE terhadap rata-rata Item Sold
+# mean_item_sold = data_bulanan['Item Sold'].mean()
+# var_item_sold = data_bulanan['Item Sold'].var()
+
+# mae_ratio = mae / mean_item_sold
+# rmse_ratio = rmse / mean_item_sold
+
 # ==========================================================
 # Prediksi Item Sold untuk 1 Bulan ke Depan
 # ==========================================================
