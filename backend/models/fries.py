@@ -119,6 +119,11 @@ mae = mean_absolute_error(y_test_original, y_pred)
 # mae_ratio = mae / mean_item_sold
 # rmse_ratio = rmse / mean_item_sold
 
+# print(f"\nRata-rata Item Sold (bulanan): {mean_item_sold:.2f}")
+# print(f"Variance of Item Sold         : {var_item_sold:.2f}")
+# print(f"MAE Ratio terhadap mean       : {mae_ratio:.2%}")
+# print(f"RMSE Ratio terhadap mean      : {rmse_ratio:.2%}")
+
 # Tampilkan grafik training loss dan validation loss jika model baru dilatih
 # if 'history' in locals():
 #     plt.figure(figsize=(10, 5))
