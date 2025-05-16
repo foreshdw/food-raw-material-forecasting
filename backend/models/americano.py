@@ -51,7 +51,8 @@ for bahan in bahan_baku:
 # Normalisasi dengan RobustScaler
 scaler_features = RobustScaler()
 scaler_target = RobustScaler()
-features = ['Item Sold'] + [f'Per Porsi {bahan}' for bahan in bahan_baku]
+# features = ['Item Sold'] + [f'Per Porsi {bahan}' for bahan in bahan_baku] # hanya digunakan jika nilai per porsi bahan baku tidak nol setelah dinormalisasi
+features = ['Item Sold']
 X_scaled = scaler_features.fit_transform(data_bulanan[features])
 y_scaled = scaler_target.fit_transform(data_bulanan[['Item Sold']])
 
