@@ -76,7 +76,7 @@ def predict():
         data_bulanan[f'Per Porsi {bahan}'] = data_bulanan[bahan] / data_bulanan['Item Sold']
 
     # Ambil data terakhir untuk prediksi
-    last_data = data_bulanan.iloc[-1][['Item Sold'] + [f'Per Porsi {bahan}' for bahan in bahan_baku]].values.reshape(1, -1)
+    last_data = data_bulanan.iloc[-1][['Item Sold']].values.reshape(1, -1)
 
     # Prediksi penjualan berdasarkan menu
     if menu == 'Americano':
