@@ -91,7 +91,7 @@ def predict():
     # Hitung kebutuhan bahan baku berdasarkan hasil prediksi
     bahan_baku_total = {}
     for bahan in bahan_baku:
-        mean_ratio = data_bulanan[f'Per Porsi {bahan}'].mean()
+        mean_ratio = data_bulanan[f'Per Porsi {bahan}'].mean() # Mean digunakan untuk menghindari perbedaan rasio bahan baku
         total_bahan = max(int(round(predicted_sold * mean_ratio)), 0)
         bahan_baku_total[bahan] = total_bahan
 
@@ -106,7 +106,7 @@ def predict():
 
     # Simpan hasil prediksi ke dalam dataset baru
     new_entry = {
-        'Date': predicted_date.strftime('%Y-%m-%d'),  # Pastikan format tetap YYYY-MM-DD
+        'Date': predicted_date.strftime('%Y-%m-%d'),  # Memastikan format tetap YYYY-MM-DD
         'Item Name': menu,
         'Category Name': 'Coffee' if menu == 'Americano' else 'Food',
         'Item Sold': predicted_sold
@@ -120,7 +120,7 @@ def predict():
     df_new_entry = pd.DataFrame([new_entry])
     df = pd.concat([df, df_new_entry], ignore_index=True)
 
-    # Hanya simpan kolom yang diperlukan
+    # Hanya simpan kolom yang diperlukan ke dalam dataframe baru
     required_columns = ['Date', 'Item Name', 'Category Name', 'Item Sold'] + bahan_baku
     df = df[required_columns]
 
@@ -131,18 +131,18 @@ def predict():
         # Format tanggal di Excel agar tetap dalam bentuk YYYY-MM-DD
         workbook = writer.book
         sheet = workbook.active
-        date_column = sheet['A']  # Kolom 'Date'
+        date_column = sheet['A']  # Mengakses Kolom 'Date'
 
         # Terapkan format tanggal ke seluruh kolom 'Date'
         date_style = NamedStyle(name="date_style", number_format="YYYY-MM-DD")
         for cell in date_column[1:]:  # Lewati header
             cell.style = date_style
 
-        # Atur lebar kolom agar tidak terlalu sempit
+        # Atur lebar kolom sebanyak 15 karakter agar tidak terlalu sempit
         sheet.column_dimensions['A'].width = 15
         sheet.column_dimensions['B'].width = 15
 
-        # **Menengahkan seluruh isi tabel**
+        # Menengahkan seluruh isi tabel
         center_alignment = Alignment(horizontal='center')
 
         # Iterasi ke semua sel untuk menengahkan teks

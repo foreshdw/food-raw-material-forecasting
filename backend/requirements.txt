@@ -1,0 +1,16 @@
+Flask==3.1.0
+flask-cors==5.0.1
+gunicorn
+
+numpy>=1.24
+pandas>=2.2
+scikit-learn>=1.3
+matplotlib
+openpyxl
+h5py
+tensorflow>=2.12,<2.20
+keras
+
+requests
+joblib
+python-dateutil
