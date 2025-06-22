@@ -7,7 +7,7 @@ const Dashboard = () => {
 
     const handlePredict = async () => {
         try {
-            const response = await axios.post("http://localhost:5000/predict", { menu: selectedMenu });
+            const response = await axios.post(`${process.env.REACT_APP_URL}predict`, { menu: selectedMenu });
             console.log("API Response Data:", response.data);
             setPrediction(response.data);
         } catch (error) {

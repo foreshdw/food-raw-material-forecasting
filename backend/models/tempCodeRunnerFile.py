@@ -1,0 +1,1 @@
+features = ['Item Sold'] + [f'Per Porsi {bahan}' for bahan in bahan_baku] # hanya digunakan jika nilai per porsi bahan baku tidak nol setelah dinormalisasi

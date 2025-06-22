@@ -4,6 +4,7 @@ import axios from "axios";
 const Dashboard = () => {
     const predictionRef = useRef(null); // ini ref untuk scroll
 
+    console.log(process.env.REACT_APP_URL);
     // State awal tampilan
     const [selectedMenu, setSelectedMenu] = useState("Americano");
     const [prediction, setPrediction] = useState(null);
@@ -37,7 +38,7 @@ const Dashboard = () => {
     // Fungsi untuk menampilkan hasil prediksi
     const handlePredict = async () => {
         try {
-            const response = await axios.post("http://localhost:5000/predict", { menu: selectedMenu });
+            const response = await axios.post(`${process.env.REACT_APP_URL}predict`, { menu: selectedMenu });
             console.log("API Response Data:", response.data);
             
             setPrediction(response.data);
@@ -120,7 +121,7 @@ const Dashboard = () => {
         formData.append("file", selectedFile);
     
         try {
-            const response = await axios.post("http://localhost:5000/upload", formData, {
+            const response = await axios.post(`${process.env.REACT_APP_URL}upload`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },

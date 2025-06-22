@@ -24,6 +24,7 @@ ALLOWED_EXTENSIONS = {'xlsx'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
+# Fungsi helper untuk cek apakah file yang diupload/digunakan merupakan .xlsx
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -55,6 +56,7 @@ def predict():
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], latest_uploaded_filename)
     df = pd.read_excel(file_path)
 
+    # Mengambil data dari request frontend
     data = request.get_json()
     menu = data.get('menu')
 
@@ -77,6 +79,8 @@ def predict():
 
     # Ambil data terakhir untuk prediksi
     last_data = data_bulanan.iloc[-1][['Item Sold']].values.reshape(1, -1)
+    # feature_columns = ['Item Sold'] + [f'Per Porsi {bahan}' for bahan in bahan_baku]
+    # last_data = data_bulanan[feature_columns].iloc[-1:].values
 
     # Prediksi penjualan berdasarkan menu
     if menu == 'Americano':

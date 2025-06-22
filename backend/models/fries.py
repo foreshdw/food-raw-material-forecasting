@@ -4,7 +4,7 @@ import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Dropout
 from sklearn.preprocessing import RobustScaler
-from sklearn.metrics import mean_squared_error, mean_absolute_error
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import joblib
 import matplotlib.pyplot as plt
 
@@ -107,11 +107,13 @@ y_test_original = scaler_target.inverse_transform(y_test).flatten()
 mse = mean_squared_error(y_test_original, y_pred)
 rmse = np.sqrt(mse)
 mae = mean_absolute_error(y_test_original, y_pred)
+r2 = r2_score(y_test_original, y_pred)
 
 # print("\n Evaluasi Model Garlic Fries")
-# print(f"MSE: {mse:.4f}")
-# print(f"RMSE: {rmse:.4f}")
-# print(f"MAE: {mae:.4f}")
+print(f"MSE: {mse:.4f}")
+print(f"RMSE: {rmse:.4f}")
+print(f"MAE: {mae:.4f}")
+print(f"R² Score: {r2:.4f}")
 
 # Evaluasi tambahan: Rasio RMSE dan MAE terhadap rata-rata Item Sold
 # mean_item_sold = data_bulanan['Item Sold'].mean()
@@ -126,27 +128,27 @@ mae = mean_absolute_error(y_test_original, y_pred)
 # print(f"RMSE Ratio terhadap mean      : {rmse_ratio:.2%}")
 
 # Tampilkan grafik training loss dan validation loss jika model baru dilatih
-# if 'history' in locals():
-#     plt.figure(figsize=(10, 5))
-#     plt.plot(history.history['loss'], label='Training Loss', color='blue')
-#     plt.plot(history.history['val_loss'], label='Validation Loss', color='red')
-#     plt.xlabel("Epochs")
-#     plt.ylabel("Loss")
-#     plt.title("Training vs Validation Loss - Garlic Fries")
-#     plt.legend()
-#     plt.grid()
-#     plt.show()
+if 'history' in locals():
+    plt.figure(figsize=(10, 5))
+    plt.plot(history.history['loss'], label='Training Loss', color='blue')
+    plt.plot(history.history['val_loss'], label='Validation Loss', color='red')
+    plt.xlabel("Epochs")
+    plt.ylabel("Loss")
+    plt.title("Training vs Validation Loss - Garlic Fries")
+    plt.legend()
+    plt.grid()
+    plt.show()
 
 # Grafik Actual vs Predicted
-# plt.figure(figsize=(10, 5))
-# plt.plot(y_test_original, label="Actual", marker='o', linestyle='dashed', color='blue')
-# plt.plot(y_pred, label="Predicted", marker='s', linestyle='dashed', color='red')
-# plt.xlabel("Months")
-# plt.ylabel("Item Sold")
-# plt.title("Actual vs Predicted - Garlic Fries")
-# plt.legend()
-# plt.grid()
-# plt.show()
+plt.figure(figsize=(10, 5))
+plt.plot(y_test_original, label="Actual", marker='o', linestyle='dashed', color='blue')
+plt.plot(y_pred, label="Predicted", marker='s', linestyle='dashed', color='red')
+plt.xlabel("Months")
+plt.ylabel("Item Sold")
+plt.title("Actual vs Predicted - Garlic Fries")
+plt.legend()
+plt.grid()
+plt.show()
 
 # ==========================================================
 # Prediksi Item Sold dan Bahan Baku untuk 1 Bulan ke Depan

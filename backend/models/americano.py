@@ -4,7 +4,7 @@ import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Dropout
 from sklearn.preprocessing import RobustScaler
-from sklearn.metrics import mean_squared_error, mean_absolute_error
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import joblib
 import matplotlib.pyplot as plt
 
@@ -31,11 +31,11 @@ data_bulanan = data_americano.groupby('Month')[kolom_numerik].sum().reset_index(
 
 # Fungsi menghapus outliers (Interquartile Range - IQR)
 def remove_outliers(df, column):
-    Q1 = df[column].quantile(0.25)
-    Q3 = df[column].quantile(0.75)
-    IQR = Q3 - Q1
-    lower_bound = Q1 - 1.5 * IQR
-    upper_bound = Q3 + 1.5 * IQR
+    Q1 = df[column].quantile(0.25)  # Kuartil pertama (25% data)
+    Q3 = df[column].quantile(0.75)  # Kuartil ketiga (75% data)
+    IQR = Q3 - Q1                   # Rentang interkuartil (Interquartile Range)
+    lower_bound = Q1 - 1.5 * IQR    # Batas bawah untuk outlier
+    upper_bound = Q3 + 1.5 * IQR    # Batas atas untuk outlier
     return df[(df[column] >= lower_bound) & (df[column] <= upper_bound)]
 
 # Hapus outliers pada kolom Item Sold dan semua bahan baku
@@ -107,11 +107,13 @@ y_test_original = scaler_target.inverse_transform(y_test).flatten()
 mse = mean_squared_error(y_test_original, y_pred)
 rmse = np.sqrt(mse)
 mae = mean_absolute_error(y_test_original, y_pred)
+r2 = r2_score(y_test_original, y_pred)
 
 # print("\nEvaluasi untuk Menu: Americano")
-# print(f"MSE: {mse:.4f}")
-# print(f"RMSE: {rmse:.4f}")
-# print(f"MAE: {mae:.4f}")
+print(f"MSE: {mse:.4f}")
+print(f"RMSE: {rmse:.4f}")
+print(f"MAE: {mae:.4f}")
+print(f"R² Score: {r2:.4f}")
 
 # Evaluasi tambahan: Rasio RMSE dan MAE terhadap rata-rata Item Sold
 # mean_item_sold = data_bulanan['Item Sold'].mean()
@@ -159,24 +161,24 @@ print("Bahan Baku Bulanan:", bahan_baku_total)
 # Grafik Training Loss vs Validation Loss
 # ==========================================================
 # plt.figure(figsize=(10, 5))
-# plt.plot(history.history['loss'], label='Training Loss', color='blue')
-# plt.plot(history.history['val_loss'], label='Validation Loss', color='red')
-# plt.xlabel("Epochs")
-# plt.ylabel("Loss")
-# plt.title("Training vs Validation Loss - Americano")
-# plt.legend()
-# plt.grid()
-# plt.show()
+plt.plot(history.history['loss'], label='Training Loss', color='blue')
+plt.plot(history.history['val_loss'], label='Validation Loss', color='red')
+plt.xlabel("Epochs")
+plt.ylabel("Loss")
+plt.title("Training vs Validation Loss - Americano")
+plt.legend()
+plt.grid()
+plt.show()
 
 # ==========================================================
 # Grafik Actual vs Predicted
 # ==========================================================
-# plt.figure(figsize=(10, 5))
-# plt.plot(y_test_original, label="Actual", marker='o', linestyle='dashed', color='blue')
-# plt.plot(y_pred, label="Predicted", marker='s', linestyle='dashed', color='red')
-# plt.xlabel("Months")
-# plt.ylabel("Item Sold")
-# plt.title("Actual vs Predicted Item Sold (Monthly) - Americano")
-# plt.legend()
-# plt.grid()
-# plt.show()
+plt.figure(figsize=(10, 5))
+plt.plot(y_test_original, label="Actual", marker='o', linestyle='dashed', color='blue')
+plt.plot(y_pred, label="Predicted", marker='s', linestyle='dashed', color='red')
+plt.xlabel("Months")
+plt.ylabel("Item Sold")
+plt.title("Actual vs Predicted Item Sold (Monthly) - Americano")
+plt.legend()
+plt.grid()
+plt.show()
